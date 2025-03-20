@@ -3,6 +3,7 @@ package risserver
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/bio-routing/bio-rd/protocols/bgp/server"
 	"github.com/bio-routing/bio-rd/route"
@@ -127,7 +128,8 @@ func (s *Server) Get(ctx context.Context, req *pb.GetRequest) (*pb.GetResponse, 
 	if req.Router == "" {
 		ret, err := s.getPrefixFromAllRouters(req)
 		if err != nil {
-			return nil, fmt.Errorf("error getting prefix from all routers: %w", err)
+			log.Printf("unable to get prefix %s for router %s: %w", req.Pfx, req.Router, err)
+			return nil, nil
 		}
 
 		return ret, nil
